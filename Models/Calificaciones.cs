@@ -12,8 +12,5 @@ namespace MacoriStars.Models
         public int IdUsuario { get; set; }
         [ForeignKey("IdUsuario")]
         public virtual Usuarios Usuario { get; set; }
-        public int IdEstablecimiento { get; set; }
-        [ForeignKey("IdEstablecimiento")]
-        public virtual Establecimientos Establecimiento { get; set; }
     }
 }
