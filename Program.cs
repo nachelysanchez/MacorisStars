@@ -15,7 +15,9 @@ builder.Services.AddDbContext<Contexto>(options =>
 }
 );
 
-builder.Services.AddScoped<ICategoriasServices, CategoriasService>();
+builder.Services.AddTransient<ICategoriasServices, CategoriasService>();
+builder.Services.AddTransient<IEstablecimientosService, EstablecimientosService>();
+builder.Services.AddTransient<IUsuariosService, UsuariosService>();
 
 var app = builder.Build();
 
