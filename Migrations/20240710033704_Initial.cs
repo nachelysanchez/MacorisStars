@@ -69,11 +69,18 @@ namespace MacoriStars.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Valoracion = table.Column<int>(type: "int", nullable: false),
-                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdEstablecimiento = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Calificaciones", x => x.IdCalificacion);
+                    table.ForeignKey(
+                        name: "FK_Calificaciones_Establecimientos_IdEstablecimiento",
+                        column: x => x.IdEstablecimiento,
+                        principalTable: "Establecimientos",
+                        principalColumn: "IdEstablecimiento",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Calificaciones_Usuarios_IdUsuario",
                         column: x => x.IdUsuario,
@@ -90,11 +97,18 @@ namespace MacoriStars.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comentario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdEstablecimiento = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Resenas", x => x.IdReserva);
+                    table.ForeignKey(
+                        name: "FK_Resenas_Establecimientos_IdEstablecimiento",
+                        column: x => x.IdEstablecimiento,
+                        principalTable: "Establecimientos",
+                        principalColumn: "IdEstablecimiento",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Resenas_Usuarios_IdUsuario",
                         column: x => x.IdUsuario,
@@ -102,6 +116,11 @@ namespace MacoriStars.Migrations
                         principalColumn: "IdUsuario",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Calificaciones_IdEstablecimiento",
+                table: "Calificaciones",
+                column: "IdEstablecimiento");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Calificaciones_IdUsuario",
@@ -112,6 +131,11 @@ namespace MacoriStars.Migrations
                 name: "IX_Establecimientos_IdCategoria",
                 table: "Establecimientos",
                 column: "IdCategoria");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Resenas_IdEstablecimiento",
+                table: "Resenas",
+                column: "IdEstablecimiento");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Resenas_IdUsuario",
@@ -126,16 +150,16 @@ namespace MacoriStars.Migrations
                 name: "Calificaciones");
 
             migrationBuilder.DropTable(
-                name: "Establecimientos");
-
-            migrationBuilder.DropTable(
                 name: "Resenas");
 
             migrationBuilder.DropTable(
-                name: "Categorias");
+                name: "Establecimientos");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Categorias");
         }
     }
 }

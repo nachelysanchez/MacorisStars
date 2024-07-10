@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MacoriStars.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240710032335_Initial")]
+    [Migration("20240710033704_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -36,6 +36,9 @@ namespace MacoriStars.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("IdEstablecimiento")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
@@ -43,6 +46,8 @@ namespace MacoriStars.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("IdCalificacion");
+
+                    b.HasIndex("IdEstablecimiento");
 
                     b.HasIndex("IdUsuario");
 
@@ -111,10 +116,15 @@ namespace MacoriStars.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("IdEstablecimiento")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
                     b.HasKey("IdReserva");
+
+                    b.HasIndex("IdEstablecimiento");
 
                     b.HasIndex("IdUsuario");
 
@@ -148,11 +158,19 @@ namespace MacoriStars.Migrations
 
             modelBuilder.Entity("MacoriStars.Models.Calificaciones", b =>
                 {
+                    b.HasOne("MacoriStars.Models.Establecimientos", "Establecimiento")
+                        .WithMany()
+                        .HasForeignKey("IdEstablecimiento")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MacoriStars.Models.Usuarios", "Usuario")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Establecimiento");
 
                     b.Navigation("Usuario");
                 });
@@ -170,11 +188,19 @@ namespace MacoriStars.Migrations
 
             modelBuilder.Entity("MacoriStars.Models.Resenas", b =>
                 {
+                    b.HasOne("MacoriStars.Models.Establecimientos", "Establecimiento")
+                        .WithMany()
+                        .HasForeignKey("IdEstablecimiento")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MacoriStars.Models.Usuarios", "Usuario")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Establecimiento");
 
                     b.Navigation("Usuario");
                 });
