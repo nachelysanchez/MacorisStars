@@ -20,6 +20,7 @@ builder.Services.AddTransient<ICategoriasServices, CategoriasService>();
 builder.Services.AddTransient<IEstablecimientosService, EstablecimientosService>();
 builder.Services.AddTransient<IUsuariosService, UsuariosService>();
 builder.Services.AddTransient<IResenasService, ResenasService>();
+builder.Services.AddTransient<ICalificacionesService, CalificacionesService>();
 builder.Services.AddScoped<SesionDto>();
 
 var app = builder.Build();
