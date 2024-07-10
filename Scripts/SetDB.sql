@@ -2,7 +2,6 @@
 GO
 USE MacorisStarsDb
 GO
-
 CREATE TABLE dbo.Usuarios
 (
 IdUsuario INT PRIMARY KEY IDENTITY(1,1),
@@ -31,27 +30,15 @@ CREATE TABLE dbo.Resenas
 IdResena INT PRIMARY KEY IDENTITY(1,1),
 IdUsuario INT REFERENCES dbo.Usuarios(IdUsuario),
 Fecha DATETIME NOT NULL DEFAULT(GETDATE()),
-Comentario VARCHAR(MAX) NOT NULL
+Comentario VARCHAR(MAX) NOT NULL,
+IdEstablecimiento INT REFERENCES dbo.Establecimientos(IdEstablecimiento)
 )
 GO
 CREATE TABLE dbo.Calificaciones
 (
 IdCalificacion INT PRIMARY KEY IDENTITY(1,1),
 IdUsuario INT REFERENCES dbo.Usuarios(IdUsuario),
+IdEstablecimiento INT REFERENCES dbo.Establecimientos(IdEstablecimiento),
 Fecha DATETIME NOT NULL DEFAULT(GETDATE()),
 Valoracion INT NOT NULL
-)
-GO
-CREATE TABLE EstablecimientosResenaDetalle
-(
-Id INT PRIMARY KEY IDENTITY(1,1),
-IdEstablecimiento INT FOREIGN KEY REFERENCES Establecimientos(IdEstablecimiento),
-IdResena INT FOREIGN KEY REFERENCES Resenas(IdResena)
-)
-GO
-CREATE TABLE EstablecimientosCalificacionDetalle
-(
-Id INT PRIMARY KEY IDENTITY(1,1),
-IdEstablecimiento INT FOREIGN KEY REFERENCES Establecimientos(IdEstablecimiento),
-IdCalificacion INT FOREIGN KEY REFERENCES Calificaciones(IdCalificacion)
 )
