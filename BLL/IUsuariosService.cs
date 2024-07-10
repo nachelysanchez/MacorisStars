@@ -11,7 +11,6 @@ namespace MacoriStars.BLL
         public void CerrarSesion();
         public Task<List<Usuarios>> GetUsuarios();
         public Task<List<Usuarios>> GetListAsync(Expression<Func<Usuarios, bool>> criterio);
-        public Task<bool> ModificarUsuario(Usuarios usuario);
         public Task<bool> RegistrarUsuario(Usuarios usuario);
     }
 }
