@@ -1,6 +1,7 @@
 using MacoriStars.BLL;
 using MacoriStars.Components;
 using MacoriStars.DAL;
+using MacoriStars.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,8 @@ builder.Services.AddDbContext<Contexto>(options =>
 builder.Services.AddTransient<ICategoriasServices, CategoriasService>();
 builder.Services.AddTransient<IEstablecimientosService, EstablecimientosService>();
 builder.Services.AddTransient<IUsuariosService, UsuariosService>();
+builder.Services.AddTransient<IResenasService, ResenasService>();
+builder.Services.AddScoped<SesionDto>();
 
 var app = builder.Build();
 

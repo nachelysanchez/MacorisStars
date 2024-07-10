@@ -6,7 +6,7 @@ namespace MacoriStars.Models
     public class Resenas
     {
         [Key]
-        public int IdReserva { get; set; }
+        public int IdResena { get; set; }
         public DateTime Fecha { get; set; } = DateTime.Now;
         public string Comentario { get; set; } = string.Empty;
         public int IdUsuario { get; set; }
