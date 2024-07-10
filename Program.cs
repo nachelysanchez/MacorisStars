@@ -1,3 +1,4 @@
+using MacoriStars.BLL;
 using MacoriStars.Components;
 using MacoriStars.DAL;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<Contexto>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 }
 );
+
+builder.Services.AddScoped<ICategoriasServices, CategoriasService>();
 
 var app = builder.Build();
 
