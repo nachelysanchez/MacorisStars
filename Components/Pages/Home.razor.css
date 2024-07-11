@@ -1,0 +1,46 @@
+﻿.container {
+    padding: 0px;
+}
+.container img{
+    width:219px;
+    height:189px;
+}
+.container .container-img{
+    text-align: end;
+}
+
+.container-bienvenida{
+    text-align: center;
+    margin-left:150px;
+    display:grid;
+    grid-template-columns: repeat(2, 30rem);
+}
+
+.container .container-bienvenida .container-h1-descubre h1 {
+    color: #0B203F;
+    font-size: 60px;
+    font-weight: 800
+}
+.container .container-bienvenida .container-h1-joyas h1 {
+    color: #B3611D;
+    font-size: 60px;
+    font-weight: 800
+}
+
+.name-pueblo h1 {
+    font-size:80px;
+    font-weight:800;
+    background: linear-gradient(#0B203F,#1D54A5);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+.but-login input[type="submit"] {
+    font-weight: 800;
+    font-size: 50px;
+    cursor: pointer;
+    margin-top: 5px;
+    border: 2px;
+}
+input[type="submit"]:hover {
+    background: linear-gradient(90deg, #E30F87, #BF4222);
+}
