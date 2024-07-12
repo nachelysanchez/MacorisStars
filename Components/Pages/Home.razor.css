@@ -34,13 +34,28 @@
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
 }
-.but-login input[type="submit"] {
+
+.container .but-login input[type="submit"] {
+    background: #C7C1A1;
     font-weight: 800;
     font-size: 50px;
     cursor: pointer;
     margin-top: 5px;
-    border: 2px;
+    color: #B3611D;
+    font-weight: 800;
+    border-radius: 5px;
 }
-input[type="submit"]:hover {
-    background: linear-gradient(90deg, #E30F87, #BF4222);
+
+    .container .but-login input[type="submit"]:hover {
+        background: linear-gradient(#C7C1A1,#D7C1A1);
+    }
+.container .p-registrarse label{
+    font-weight:100;
+    font-size:10px;
+}
+.container .p-registrarse strong {
+    font-weight: 100;
+    font-size: 10px;
+    color:cornflowerblue;
+    cursor: pointer;
 }
