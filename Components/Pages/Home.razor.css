@@ -1,5 +1,6 @@
-﻿.container {
-    padding: 0px;
+﻿
+.container {
+    text-align: center;
 }
 .container img{
     width:219px;
@@ -14,6 +15,7 @@
     margin-left:150px;
     display:grid;
     grid-template-columns: repeat(2, 30rem);
+    margin-top:0px;
 }
 
 .container .container-bienvenida .container-h1-descubre h1 {

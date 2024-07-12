@@ -1,5 +1,9 @@
-﻿@layout Layout.Login
+﻿@layout Layout.Welcome
 @page "/"
+
+@inject NavigationManager navManager
+
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
@@ -19,10 +23,23 @@
         <h1>SAN FRANCISCO DE MACORIS</h1>
     </div>
     <div class="but-login">
-        <input type="submit" value="INICIAR SESION" />
+        <input type="submit" @onclick="Login" value="INICIAR SESION" />
     </div>
     <div class="p-registrarse">
         <label>¿NO TIENES UNA CUENTA? </label>
-        <strong> REGISTRATE</strong>
+        <strong @onclick="Registrarse"> REGISTRATE</strong>
     </div>
 </div>
+
+@code{
+
+    private void Login()
+    {
+        navManager.NavigateTo("/login");
+    }
+
+    private void Registrarse()
+    {
+        navManager.NavigateTo("/registrarse");
+    }
+}
