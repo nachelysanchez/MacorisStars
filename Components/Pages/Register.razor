@@ -1,5 +1,5 @@
 ﻿@layout Layout.Authentication
-@page "/login"
+@page "/registrarse"
 @inject NavigationManager navManager
 @rendermode InteractiveServer
 <div class="container">
@@ -10,7 +10,10 @@
 
         <div class="container-inputs">
             <form>
-
+                <div class="nombreCompleto">
+                    <label>Nombre Completo</label>
+                    <input type="text" />
+                </div>
                 <div class="nombreUsuario">
                     <label>Nombre de Usuario</label>
                     <input type="text" />
@@ -20,20 +23,20 @@
                     <input type="password" />
                 </div>
                 <div class="btn-cont">
-                    <input type="submit" value="INICIAR SESION" />
+                    <input type="submit" value="REGISTRARSE" />
                 </div>
             </form>
         </div>
         <div class="p-registrarse">
-            <label>¿NO TIENES UNA CUENTA? </label>
-            <strong @onclick="Register"> REGISTRATE</strong>
+            <label>¿TIENES UNA CUENTA? </label>
+            <strong @onclick="Login"> INICIA SESION</strong>
         </div>
     </div>
 </div>
 
 @code {
-    private void Register()
+    private void Login()
     {
-        navManager.NavigateTo("/registrarse");
+        navManager.NavigateTo("/login");
     }
 }
