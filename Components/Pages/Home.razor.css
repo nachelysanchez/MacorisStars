@@ -61,3 +61,9 @@
     color:cornflowerblue;
     cursor: pointer;
 }
+
+@media screen and (max-width: 800px) {
+    .container-bienvenida {
+        display: none;
+    }
+}
