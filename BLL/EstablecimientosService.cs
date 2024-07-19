@@ -43,5 +43,21 @@ namespace MacoriStars.BLL
             var lista = await contexto.Establecimientos.Where(criterio).ToListAsync();
             return lista;
         }
+
+        public async Task<bool> Insertar(Establecimientos establecimiento)
+        {
+            bool paso = false;
+            try
+            {
+                await contexto.Establecimientos.AddAsync(establecimiento);
+                paso = await contexto.SaveChangesAsync() > 0;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return paso;
+        }
     }
 }

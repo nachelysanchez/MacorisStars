@@ -8,5 +8,6 @@ namespace MacoriStars.BLL
         Task<Establecimientos> GetEstablecimiento(int idEstablecimiento);
         Task<List<Establecimientos>> GetEstablecimientos();
         Task<List<Establecimientos>> GetList(Expression<Func<Establecimientos, bool>> criterio);
+        Task<bool> Insertar(Establecimientos establecimiento);
     }
 }
