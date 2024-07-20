@@ -9,5 +9,6 @@ namespace MacoriStars.BLL
         public Task<List<Calificaciones>> GetCalificaciones();
         public Task<Calificaciones> GetCalificacion(int id);
         public Task<List<Calificaciones>> GetListAsync(Expression<Func<Calificaciones, bool>> criterio);
+        public Task<decimal> Calculo(int idEstablecimiento);
     }
 }

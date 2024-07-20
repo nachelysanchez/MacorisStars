@@ -49,5 +49,31 @@ namespace MacoriStars.BLL
             }
             return paso;
         }
+
+        public async Task<decimal> Calculo(int idEstablecimiento)
+        {
+            List<Calificaciones> lista = new();
+            decimal valor = 0;
+            try
+            {
+                lista = await contexto.Calificaciones.Where(x => x.IdEstablecimiento == idEstablecimiento).AsNoTracking().ToListAsync();
+                if (lista.Count > 0)
+                {
+
+                    foreach (var item in lista)
+                    {
+
+                        valor += item.Valoracion;
+                    }
+                    valor /= lista.Count;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return valor;
+        }
     }
 }

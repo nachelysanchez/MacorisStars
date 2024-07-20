@@ -3,13 +3,14 @@
 
 @inject IEstablecimientosService _service;
 @rendermode InteractiveServer
+@inject NavigationManager navManager;
 
 <div>
     <h3>FERRETERIAS</h3>
     <div class="container">
         @foreach (var item in cards)
         {
-            <div class="carta">
+            <div class="carta" @onclick="() => Navegar(item.Id)">
                 <label>@item.Nombre</label>
                 <img src="@item.Imagen.ToString()" />
             </div>
@@ -35,6 +36,11 @@
                     Imagen = "data:image/jpeg;base64, " + Convert.ToBase64String(item.Imagen)
                 });
         }
+    }
+
+    private void Navegar(int id)
+    {
+        navManager.NavigateTo("/vEstablecimiento/" + id);
     }
 
 }

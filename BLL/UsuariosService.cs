@@ -34,6 +34,11 @@ namespace MacoriStars.BLL
             return await contexto.Usuarios.FindAsync(idUsuario);
         }
 
+        public string GetNameUserById(int idUsuario)
+        {
+            return contexto.Usuarios.Where(x => x.IdUsuario == idUsuario).Select(x => x.Nombre).FirstOrDefault();
+        }
+
         public Task<Usuarios> GetUsuarioLogueado()
         {
             int usuarioL = sesion.GetUsuarioLog();
@@ -70,6 +75,10 @@ namespace MacoriStars.BLL
                 .Where(x => x.NombreUsuario == username && x.Contrasena == password)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
+            if(user != null)
+            {
+                sesion.SetUsuarioLog(user.IdUsuario);
+            }
             return user;
         }
 

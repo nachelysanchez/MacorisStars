@@ -1,6 +1,6 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
-@inject ICategoriasServices CategoriasService;
+@inject IEstablecimientosService _service;
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
@@ -9,12 +9,38 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<InputFile class="file-input" OnChange="(e) => {OnInputFileChange(e);}" />
+
+    <button class="btn btn-primary" @onclick="Guardar">Guardar</button>
 @code {
     private int currentCount = 0;
-
+    public Establecimientos establecimiento { get; set; } = new();
+    public string imgUrl { get; set; } = string.Empty;
     private async void IncrementCount()
     {
         currentCount++;
-        var cat = await CategoriasService.GetCategoria(1);
+    }
+
+    async Task OnInputFileChange(InputFileChangeEventArgs archivo)
+    {
+        if (archivo != null)
+        {
+            var ms = new MemoryStream();
+            await archivo.File.OpenReadStream().CopyToAsync(ms);
+            establecimiento.Imagen = ms.ToArray();
+        }
+    }
+
+    async Task DesconvertirImagen(byte[] imagen)
+    {
+        imgUrl = "data:image/png;base64, " + Convert.ToBase64String(imagen);
+    }
+
+    private async Task Guardar()
+    {
+        establecimiento.IdCategoria = 4;
+        establecimiento.Nombre = "Ferreteria Mi Reserva";
+        var guardado = await _service.Insertar(establecimiento);
+        
     }
 }

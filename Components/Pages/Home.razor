@@ -1,7 +1,9 @@
 ﻿@layout Layout.Welcome
 @page "/"
+@using MacoriStars.Dtos
 
 @inject NavigationManager navManager
+@inject SesionDto sesion;
 
 @rendermode InteractiveServer
 
@@ -32,6 +34,11 @@
 </div>
 
 @code{
+    protected override Task OnInitializedAsync()
+    {
+        sesion.SetUsuarioLog(0);
+        return base.OnInitializedAsync();
+    }
 
     private void Login()
     {

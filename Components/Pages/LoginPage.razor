@@ -1,7 +1,10 @@
 ﻿@layout Layout.Authentication
 @page "/login"
 @inject NavigationManager navManager
+@inject IUsuariosService _usService;
 @rendermode InteractiveServer
+
+
 <div class="container">
     <div class="container-img">
         <img src="LogoSinFondo.png" />
@@ -13,14 +16,15 @@
 
                 <div class="nombreUsuario">
                     <label>Nombre de Usuario</label>
-                    <input type="text" />
+                    <input type="text" @bind="user.NombreUsuario" />
                 </div>
                 <div class="pass-cont">
                     <label>Contraseña</label>
-                    <input type="password" />
+                    <input type="password" @bind="user.Contrasena" />
                 </div>
+                <label>@mensaje</label>
                 <div class="btn-cont">
-                    <input type="submit" value="INICIAR SESION" />
+                    <input type="button" @onclick="LoginAction" value="INICIAR SESION" />
                 </div>
             </form>
         </div>
@@ -32,8 +36,35 @@
 </div>
 
 @code {
+    public Usuarios user { get; set; } = new();
+    private string mensaje = "";
     private void Register()
     {
         navManager.NavigateTo("/registrarse");
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        var usuario = _usService.GetUsuarioLogueado();
+        if(usuario != null)
+        {
+            _usService.CerrarSesion();
+        }
+        return base.OnInitializedAsync();
+    }
+
+    private async Task LoginAction()
+    {
+        user = await _usService.Login(user.NombreUsuario, user.Contrasena);
+        if (user != null)
+        {
+
+            navManager.NavigateTo("/cSupermercados");
+        }
+        else
+        {
+            this.OnInitialized();
+            mensaje = "Correo o contraseña incorrecta";
+        }
     }
 }

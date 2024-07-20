@@ -50,7 +50,7 @@ form label{
     text-align:center;
 
 }
-input[type="submit"] {
+input[type="button"] {
     background: #1D54A5;
     font-weight: 600;
     font-size: 30px;
@@ -59,7 +59,7 @@ input[type="submit"] {
     color: black;
     border-radius: 5px;
 }
-.btn-cont input[type="submit"]:hover {
+.btn-cont input[type="button"]:hover {
     background-color: #0B203F;
 }
 

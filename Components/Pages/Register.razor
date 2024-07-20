@@ -1,7 +1,10 @@
 ﻿@layout Layout.Authentication
 @page "/registrarse"
 @inject NavigationManager navManager
+@inject IUsuariosService _usService;
 @rendermode InteractiveServer
+
+
 <div class="container">
     <div class="container-img">
         <img src="LogoSinFondo.png" />
@@ -12,18 +15,18 @@
             <form>
                 <div class="nombreCompleto">
                     <label>Nombre Completo</label>
-                    <input type="text" />
+                    <input type="text" @bind="user.Nombre"/>
                 </div>
                 <div class="nombreUsuario">
                     <label>Nombre de Usuario</label>
-                    <input type="text" />
+                    <input type="text" @bind="user.NombreUsuario"/>
                 </div>
                 <div class="pass-cont">
                     <label>Contraseña</label>
-                    <input type="password" />
+                    <input type="password" @bind="user.Contrasena"/>
                 </div>
                 <div class="btn-cont">
-                    <input type="submit" value="REGISTRARSE" />
+                    <input type="button" @onclick="Registrarse" value="REGISTRARSE" />
                 </div>
             </form>
         </div>
@@ -35,8 +38,24 @@
 </div>
 
 @code {
+    private string mensaje = string.Empty;
+    private Usuarios user = new();
     private void Login()
     {
         navManager.NavigateTo("/login");
+    }
+
+    private async Task Registrarse()
+    {
+        var paso = await _usService.RegistrarUsuario(user);
+        if (paso)
+        {
+            navManager.NavigateTo("/login");
+        }
+        else
+        {
+            this.OnInitialized();
+            mensaje = "No se pudo registrar";
+        }
     }
 }

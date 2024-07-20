@@ -1,0 +1,236 @@
+﻿@page "/vEstablecimiento/{id:int}"
+@using MacoriStars.Dtos
+@rendermode InteractiveServer
+@inject IEstablecimientosService _esService
+@inject ICalificacionesService _caService;
+@inject IResenasService _reService;
+@inject IUsuariosService _usService;
+@inject SesionDto sesion;
+
+<div class="container">
+    @if (establecimiento.IdCategoria == 1)
+    {
+        <h3>SUPERMERCADOS</h3>
+    }
+    else if (establecimiento.IdCategoria == 2)
+    {
+        <h3>BARES</h3>
+    }
+    else if (establecimiento.IdCategoria == 3)
+    {
+        <h3>RESTAURANTES</h3>
+    }
+    else if (establecimiento.IdCategoria == 4)
+    {
+        <h3>FERRETERIAS</h3>
+    }
+    <div class="row">
+        <div class="col-8">
+            <label>@card.Nombre</label>
+            <img src="@card.Imagen" />
+        </div>
+        <div class="col-3 accions">
+            <input type="button" @onclick="Calificar" value="Calificar" />
+            <input type="button" @onclick="Comentar" value="Comentar" />
+
+            <label>Calificaci&oacute;n Promedio: @calificaciones/5</label>
+        </div>
+    </div>
+    <div class="comentarios mt-5">
+        <h5>Comentarios</h5>
+        @if (resenas.Count > 0)
+        {
+            @foreach (var item in resenasEstabl)
+            {
+                <div class="resena">
+                    <h5>@item.NombreUsuario - @item.Fecha</h5>
+                    <br />
+                    <label>@item.Comentario</label>
+                </div>
+                <br />
+                <br />
+            }
+        }
+        else
+        {
+            <label>Todavia no se ha comentado nada</label>
+        }
+
+    </div>
+    @if (ModalComentar)
+    {
+        <div class="modal show d-block" id="roles" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color:#0B203F;">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="lbl">Crear Reseña</h4>
+                        <button type="button" class="close" @onclick="OcultarComentar"
+                                data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Contenido</label>
+                            <div class="input-group">
+                                <textarea class="form-control col-4" cols="30" rows="5" @bind="resena.Comentario" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" @onclick="GuardarComentario" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary"
+                                @onclick="OcultarComentar" data-dismiss="modal">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (ModalCalificar)
+    {
+        <div class="modal show d-block" id="roles" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color:#0B203F;">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="lbl">Califica el establecimiento</h4>
+                        <button type="button" class="close" @onclick="OcultarCalificar"
+                                data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-row align-items-center">
+                            <div class="col" style="margin-bottom:2rem;">
+                                <div class="form-group">
+                                    <label>Valoraci&oacute;n</label>
+                                    <div class="input-group">
+                                        <InputSelect @bind-Value="calificacion.Valoracion" class="form-control">
+                                            <option value="1">1 estrella</option>
+                                            <option value="2">2 estrellas</option>
+                                            <option value="3">3 estrella</option>
+                                            <option value="4">4 estrellas</option>
+                                            <option value="5">5 estrellas</option>
+                                        </InputSelect>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" @onclick="GuardarCalificacion" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary"
+                                @onclick="OcultarCalificar" data-dismiss="modal">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; } = 0;
+    public Establecimientos establecimiento { get; set; } = new();
+    public List<Resenas> resenas { get; set; } = new();
+    public List<ResenasEstablecimientos> resenasEstabl { get; set; } = new();
+    public decimal calificaciones { get; set; } = new();
+    public CardDto card { get; set; } = new();
+    private bool ModalComentar = false, ModalCalificar = false;
+    private Resenas resena { get; set; } = new();
+    private Calificaciones calificacion { get; set; } = new();
+    private Usuarios user = new();
+    private int IdUsuario = 0;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if (Id > 0)
+        {
+            await Buscar(Id);
+            IdUsuario = sesion.GetUsuarioLog();
+            if(IdUsuario > 0)
+            {
+                user = await _usService.GetUsuario(IdUsuario);
+            }
+        }
+    }
+
+    private async Task Buscar(int id)
+    {
+        if (id > 0)
+        {
+            var encontrado = await _esService.GetEstablecimiento(id);
+            if (encontrado != null)
+            {
+                this.establecimiento = encontrado;
+                card.Nombre = establecimiento.Nombre;
+                card.Id = establecimiento.IdEstablecimiento;
+                card.Imagen = "data:image/jpeg;base64, " + Convert.ToBase64String(establecimiento.Imagen);
+
+
+                resenas = await _reService.GetListAsync(x => x.IdEstablecimiento == id);
+                if(resenas.Count > 0)
+                {
+                    foreach (var item in resenas)
+                    {
+                        resenasEstabl.Add(new ResenasEstablecimientos
+                        {
+                            Id = item.IdResena,
+                            Fecha = item.Fecha,
+                            NombreUsuario = _usService.GetNameUserById(item.IdUsuario),
+                            Comentario = item.Comentario
+                        });
+                    }
+                }
+                calificaciones = await _caService.Calculo(establecimiento.IdEstablecimiento);
+            }
+        }
+    }
+
+    private async Task Comentar()
+    {
+        ModalComentar = true;
+    }
+
+    void OcultarComentar()
+    {
+        ModalComentar = false;
+    }
+    private async Task Calificar()
+    {
+        ModalCalificar = true;
+    }
+
+    void OcultarCalificar()
+    {
+        ModalCalificar = false;
+    }
+
+    private async Task GuardarComentario()
+    {
+        resena.IdEstablecimiento = establecimiento.IdEstablecimiento;
+        resena.IdUsuario = IdUsuario;
+        resena.Fecha = DateTime.Now;
+        var estado = await _reService.Guardar(resena);
+        if (estado)
+        {
+            ModalComentar = false;
+            await Buscar(Id);
+        }
+    }
+    private async Task GuardarCalificacion()
+    {
+        calificacion.IdEstablecimiento = establecimiento.IdEstablecimiento;
+        calificacion.IdUsuario = IdUsuario;
+        var estado = await _caService.Guardar(calificacion);
+        if (estado)
+        {
+            ModalCalificar = false;
+            await Buscar(Id);
+        }
+    }
+}
